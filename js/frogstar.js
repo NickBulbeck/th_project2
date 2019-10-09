@@ -57,9 +57,6 @@ dolmansaxlil = name => {
   return gargravarr;
 }
 
-let name = beeblebrox();
-let email = dolmansaxlil(name);
-
 
 /* ToDo: Create a function that does the following:
     1) Gets every div with a class of student details
@@ -68,7 +65,20 @@ let email = dolmansaxlil(name);
     4) Selects the child span element and replaces the text content with the email
 */
 
+kakrafoon = () => {
+  let students = document.querySelectorAll('.student-details');
+  for (let i=0; i<students.length; i++) {
+    let studentName = students[i].querySelector('h3');
+    let studentEmail = students[i].querySelector('.email');
+    let newName = beeblebrox();
+    let newEmail = dolmansaxlil(newName);
+    studentName.textContent = newName;
+    studentEmail.textContent = newEmail;
+  }
+}
 
+const douglasAdamsHeader = document.getElementById("douglasAdams");
+douglasAdamsHeader.addEventListener("click", kakrafoon);
 
 
 
