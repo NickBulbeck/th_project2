@@ -4,6 +4,9 @@
    Quordlepleen and, of course, Zaphod Beeblebrox. The other rule is that the name must be pronouncible in
    english.
 */
+let zaphod = 0;
+const douglasAdamsButton = document.getElementById("douglasAdamsButton");
+const blub = document.getElementById("douglasAdams");
 
 const vowels = ['a','e','i','o','u','ai','ee','ea','oo','ou','oa','oi'];
 const openers = ['B','C','D','F','G','H','J','K','L','M','N','P','R','S','T','Qu',
@@ -57,14 +60,7 @@ dolmansaxlil = name => {
   return gargravarr;
 }
 
-
-/* ToDo: Create a function that does the following:
-    1) Gets every div with a class of student details
-    2) Calls beeblebrox() and dolmansaxlil() to get a name and email
-    3) Selects the child h3 element of that div and replaces the text content with the name
-    4) Selects the child span element and replaces the text content with the email
-*/
-
+// This function replaces all the names in the document with Hitch-Hiker style alternatives (and emails likewise)
 kakrafoon = () => {
   let students = document.querySelectorAll('.student-details');
   for (let i=0; i<students.length; i++) {
@@ -77,8 +73,28 @@ kakrafoon = () => {
   }
 }
 
-const douglasAdamsHeader = document.getElementById("douglasAdams");
-douglasAdamsHeader.addEventListener("click", kakrafoon);
+douglasAdamsButton.addEventListener("click", () => {
+  kakrafoon();
+  document.getElementById('douglasAdams').textContent = "Mostly Harmless";
+} );
+
+blub.addEventListener("click", () => {
+  zaphod++;
+  if (1 === zaphod) {
+      clickTimer = setTimeout( () =>{
+      console.log("Heading has been single-clicked; zaphod = " + zaphod);
+      zaphod = 0;
+    }, 400);
+  } else if (zaphod === 2) {
+    console.log("Heading has been double-clicked; zaphod = " + zaphod);
+    zaphod = 0;
+    clearTimeout(clickTimer);
+  }
+
+});
+
+
+
 
 
 
