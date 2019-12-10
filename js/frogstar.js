@@ -3,6 +3,8 @@
    in the style of the Hitch-Hiker's Guide To The Galaxy. Original examples include Trin Tragula, Max
    Quordlepleen and, of course, Zaphod Beeblebrox. The other rule is that the name must be pronouncible in
    english.
+
+   The function and variable names adhere to good practice in no sense whatsoever.
 */
 let zaphod = 0;
 const douglasAdamsButton = document.getElementById("douglasAdamsButton");
@@ -32,6 +34,8 @@ aCloser = () => {
 // in -ble, -dle or -fle (ie, length > 2 characters). I think we can all agree that those names are funnier.
 // They're also easier to pronounce if you don't have a vowel pair followed by a consonant pair (e.g. 'ealv'); 
 // hence lintilla and allitnil.
+// There is an outside chance that the resulting name will contain an offensive syllable. It's happened
+// in testing, albeit very rarely.
 beeblebrox = () => {
   let quordle = "";
   for (let i = 0; i < 10; i++) {
@@ -53,7 +57,7 @@ beeblebrox = () => {
 }
 
 // This function takes in a name and converts it into an email address of the form forname.surname@... etc.
-// The significance of the email address will be grasped by afficionados of the Hitch-Hiker Trilogy!
+// The significance of the email address will be grasped by afficionados of the Hitch-Hiker Trilogy.
 dolmansaxlil = name => {
   let gargravarr = name.toLowerCase().replace(" ",".");
   gargravarr += "@dolmansaxlil.frogstar";

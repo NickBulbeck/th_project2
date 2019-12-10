@@ -5,6 +5,16 @@ FSJS project 2 - List Filter and Pagination
    
 // Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
 
+/*
+   Personal additional features...
+
+   1) Populate from an external file
+   2) Augment the Douglas Adams button so that it responds to a double-click
+   3) WRITE to an external file, and then use that as data so that the Douglas Adams
+      button toggles between real and fake names for the same people.
+
+*/
+
 
 /*** 
    Add your global variables that store the DOM elements you will 
@@ -47,4 +57,3 @@ FSJS project 2 - List Filter and Pagination
 
 
 
-// Remember to delete the comments that came with this file, and replace them with your own code comments.

@@ -478,6 +478,4 @@ const yymmdd = (stupidMMDDYYDate) => {
   return yymmdd;               
 }
 
-console.log(getStudentsAfterDate("02/11/13"));
-console.log(getStudentsBeforeDate("02/11/13"));
 
