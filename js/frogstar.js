@@ -2,7 +2,10 @@
    This file, and the two functions at the bottom, return a random name (and corresponding email address)
    in the style of the Hitch-Hiker's Guide To The Galaxy. Original examples include Trin Tragula, Max
    Quordlepleen and, of course, Zaphod Beeblebrox. The other rule is that the name must be pronouncible in
-   english.
+   English.
+
+   The function and variable names adhere to good practice in no sense whatsoever. As Douglas Adams
+   might have put it: they make intuitive sense in the same way that 5-dimensional geometry doesn't.
 */
 let zaphod = 0;
 const douglasAdamsButton = document.getElementById("douglasAdamsButton");
@@ -32,6 +35,8 @@ aCloser = () => {
 // in -ble, -dle or -fle (ie, length > 2 characters). I think we can all agree that those names are funnier.
 // They're also easier to pronounce if you don't have a vowel pair followed by a consonant pair (e.g. 'ealv'); 
 // hence lintilla and allitnil.
+// There is an outside chance that the resulting name will contain an offensive syllable. It's happened
+// in testing, albeit very rarely.
 beeblebrox = () => {
   let quordle = "";
   for (let i = 0; i < 10; i++) {
@@ -53,7 +58,7 @@ beeblebrox = () => {
 }
 
 // This function takes in a name and converts it into an email address of the form forname.surname@... etc.
-// The significance of the email address will be grasped by afficionados of the Hitch-Hiker Trilogy!
+// The significance of the email address will be grasped by afficionados of the Hitch-Hiker Trilogy.
 dolmansaxlil = name => {
   let gargravarr = name.toLowerCase().replace(" ",".");
   gargravarr += "@dolmansaxlil.frogstar";
@@ -73,22 +78,25 @@ kakrafoon = () => {
   }
 }
 
-douglasAdamsButton.addEventListener("click", () => {
-  kakrafoon();
-  document.getElementById('douglasAdams').textContent = "Mostly Harmless";
-} );
+// This function basically undoes the effects of kakarafoon(); that is, it replaces all the 
+// Hitch-Hiker style names/emails with the originals from the currently selected data list
+golgafrincham = () => {
+  console.log("Double-click registered on the Douglas Adams button")
+}
 
-blub.addEventListener("click", () => {
+douglasAdamsButton.addEventListener("click", () => {
   zaphod++;
   if (1 === zaphod) {
       clickTimer = setTimeout( () =>{
-      console.log("Heading has been single-clicked; zaphod = " + zaphod);
-      zaphod = 0;
-    }, 400);
+        kakrafoon();
+        blub.textContent = "Mostly Harmless";
+        zaphod = 0;
+    }, 185);
   } else if (zaphod === 2) {
-    console.log("Heading has been double-clicked; zaphod = " + zaphod);
-    zaphod = 0;
-    clearTimeout(clickTimer);
+      golgafrincham();
+      blub.textContent = "Students";
+      zaphod = 0;
+      clearTimeout(clickTimer);
   }
 
 });
