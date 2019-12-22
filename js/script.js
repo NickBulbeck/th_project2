@@ -27,7 +27,13 @@ FSJS project 2 - List Filter and Pagination
    scoped to that function.
 ***/
 
+/***
+   Add the set up list item function: you feed it an array of objects and it creates
+   an array of <li> elements
 
+   Also add the set up fae html function: it takes the li's in the given html
+   and stores them in an array.
+***/
 
 
 /*** 
