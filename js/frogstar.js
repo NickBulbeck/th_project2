@@ -81,7 +81,7 @@ kakrafoon = () => {
 // This function basically undoes the effects of kakarafoon(); that is, it replaces all the 
 // Hitch-Hiker style names/emails with the originals from the currently selected data list
 golgafrincham = () => {
-  console.log("Double-click registered on the Douglas Adams button")
+  showPage(displayedStudentList);
 }
 
 douglasAdamsButton.addEventListener("click", () => {

@@ -6,34 +6,59 @@ FSJS project 2 - List Filter and Pagination
 // Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
 
 /*
-   Personal additional features...
-
-   1) Populate from an external file
-   2) Augment the Douglas Adams button so that it responds to a double-click
-   3) WRITE to an external file, and then use that as data so that the Douglas Adams
-      button toggles between real and fake names for the same people.
+   Personal design notes:
+    At the start, need to set the current live student list.
+     - the HTML yin by default
+     - the other yins via an "API" set of json objects, accessed by the buttons
+    The current live student list is worked on by:
+     - the Douglas Adams button (which doesn't change it)
+     - the search filter
+     - the display-page function
 
 */
 
 
 /*** 
-   Add your global variables that store the DOM elements you will 
-   need to reference and/or manipulate. 
+   Global variables
+   -  The name displayedStudentList is chosen to reflect the fact that I've built the app to use
+      a variety of data sources. There are several different lists.
    
-   But be mindful of which variables should be global and which 
-   should be locally scoped to one of the two main functions you're 
-   going to create. A good general rule of thumb is if the variable 
-   will only be used inside of a function, then it can be locally 
-   scoped to that function.
 ***/
+let displayedStudentList = [];
+let pageLength = 10; // In principle it could be changed!
+const studentUl = document.querySelector('.student-list');
 
-/***
-   Add the set up list item function: you feed it an array of objects and it creates
-   an array of <li> elements
+const numberOfPages = () => {
+  let numberOfStudents = displayedStudentList.length;
+  let pages = Math.floor(numberOfStudents / pageLength) + 1;
+  return pages;
+}
 
-   Also add the set up fae html function: it takes the li's in the given html
-   and stores them in an array.
-***/
+
+// Event-listeners for the buttons...
+const dataStandard = () => {
+  location.reload(true);
+  displayedStudentList = document.querySelectorAll('li');
+  showPage(displayedStudentList);
+}
+const data44 = () => {
+  displayedStudentList = readDatabase(studentDB_44);
+  showPage(displayedStudentList);
+}
+const data64 = () => {
+  displayedStudentList = readDatabase(studentDB_64);
+  showPage(displayedStudentList);
+}
+
+document.getElementById('dataStandard').addEventListener('click',
+                                                          dataStandard,
+                                                          false);
+document.getElementById('data44').addEventListener('click',
+                                                          data44,
+                                                          false);
+document.getElementById('data64').addEventListener('click',
+                                                          data64,
+                                                          false);
 
 
 /*** 
@@ -51,15 +76,41 @@ FSJS project 2 - List Filter and Pagination
        "invoke" the function 
 ***/
 
+const clearUl = () => {
+  const oldList = studentUl.querySelectorAll("li");
+  for (let i=0; i<oldList.length; i++) {
+    const li = oldList[i];
+    studentUl.removeChild(li);
+  }
+}
 
+const showPage = (studentLiArray) => {
+  clearUl();
+  for (let i=0; i<studentLiArray.length; i++) {
+    const li = studentLiArray[i];
+    studentUl.appendChild(li);
+  }
+}
 
 
 /*** 
    Create the `appendPageLinks function` to generate, append, and add 
    functionality to the pagination buttons.
 ***/
+const appendPageLinks = () => {
+  const parentDiv = document.querySelector('.page');
+  const linkDiv = document.createElement('div');
+  const linksUL = document.createElement('ul');
+  parentDiv.appendChild(linkDiv);
+  linkDiv.classList.add('pagination');
+  linkDiv.appendChild(linksUL);
+  let html = '<li><a href="#">1</a></li>';
+  linksUL.innerHTML = html;
+}
 
+// NTS: This is done by setting up the ul in a variable, the huge page-class div in another,
+// and append-child of the new div at the end. Actually, you may not need the div because
+// the new yin is 
 
-
-
+appendPageLinks();
 
