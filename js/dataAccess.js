@@ -1,7 +1,8 @@
 /*
   This file functions as a data-access layer, based on the idea that database.js
   stands in for a database.
-  So, the main function here is 
+  The functions in this file read the "database" and turn an array of objects into an array
+  of <li> elements.
 
 */
 

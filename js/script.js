@@ -37,7 +37,8 @@ const numberOfPages = () => {
 
 // Event-listeners for the buttons...
 const dataStandard = () => {
-  location.reload(true);
+  location.reload(false);
+  console.log("running dataStandard");
   displayedStudentList = document.querySelectorAll('li');
   showPage(displayedStudentList);
 }
