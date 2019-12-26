@@ -8,6 +8,7 @@
    might have put it: they make intuitive sense in the same way that 5-dimensional geometry doesn't.
 */
 let zaphod = 0;
+let freeStandingPrism = [];
 const douglasAdamsButton = document.getElementById("douglasAdamsButton");
 const blub = document.getElementById("douglasAdams");
 
@@ -65,8 +66,18 @@ dolmansaxlil = name => {
   return gargravarr;
 }
 
+// This function is an initial setup. It sets up a copy of the current student array
+// when the Douglas Adams Button is single-clicked, so that the array ca be returned
+// to its previous state on double-click
+hooloovoo = () => {
+  freeStandingPrism = displayedStudentList;
+  console.log(freeStandingPrism);
+}
+
+
 // This function replaces all the names in the document with Hitch-Hiker style alternatives (and emails likewise)
 kakrafoon = () => {
+  hooloovoo();
   let students = document.querySelectorAll('.student-details');
   for (let i=0; i<students.length; i++) {
     let studentName = students[i].querySelector('h3');
@@ -81,6 +92,8 @@ kakrafoon = () => {
 // This function basically undoes the effects of kakarafoon(); that is, it replaces all the 
 // Hitch-Hiker style names/emails with the originals from the currently selected data list
 golgafrincham = () => {
+  console.log(freeStandingPrism);
+  displayedStudentList = freeStandingPrism;
   showPage(displayedStudentList);
 }
 

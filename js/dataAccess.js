@@ -29,7 +29,6 @@ const readDatabase = (pseudoDatabase) => {
   let studentLiArray = [];
   for (let i=0; i<pseudoDatabase.length; i++) {
     let li = objectToStudentLi(pseudoDatabase[i]);
-    console.log(li);
     studentLiArray.push(li);
   }
   return studentLiArray;

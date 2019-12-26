@@ -35,31 +35,6 @@ const numberOfPages = () => {
 }
 
 
-// Event-listeners for the buttons...
-const dataStandard = () => {
-  location.reload(false);
-  console.log("running dataStandard");
-  displayedStudentList = document.querySelectorAll('li');
-  showPage(displayedStudentList);
-}
-const data44 = () => {
-  displayedStudentList = readDatabase(studentDB_44);
-  showPage(displayedStudentList);
-}
-const data64 = () => {
-  displayedStudentList = readDatabase(studentDB_64);
-  showPage(displayedStudentList);
-}
-
-document.getElementById('dataStandard').addEventListener('click',
-                                                          dataStandard,
-                                                          false);
-document.getElementById('data44').addEventListener('click',
-                                                          data44,
-                                                          false);
-document.getElementById('data64').addEventListener('click',
-                                                          data64,
-                                                          false);
 
 
 /*** 
@@ -112,6 +87,5 @@ const appendPageLinks = () => {
 // NTS: This is done by setting up the ul in a variable, the huge page-class div in another,
 // and append-child of the new div at the end. Actually, you may not need the div because
 // the new yin is 
-
 appendPageLinks();
 
