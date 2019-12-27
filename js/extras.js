@@ -47,9 +47,7 @@ const extras_createDiv = () => {
   dataSelectDiv.appendChild(studentSearchDiv);
   parentDiv.insertBefore(dataSelectDiv,initialPageHeaderDiv);
 }
-
 extras_createDiv();
-
 // add the event listeners...
 
 document.getElementById('dataStandard').addEventListener('click',
