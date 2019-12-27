@@ -15,17 +15,16 @@
 // Event-listeners for the buttons...
 const dataStandard = () => {
   document.location.reload(true);
-  displayedStudentList = document.querySelectorAll('li');
-  console.log(displayedStudentList);
-  showPage(displayedStudentList);
+  unprocessedStudentArray = Array.from(unprocessedStudentList);
+  setUpPageData();
 }
 const data44 = () => {
-  displayedStudentList = readDatabase(studentDB_44);
-  showPage(displayedStudentList);
+  unprocessedStudentList = readDatabase(studentDB_44);
+  setUpPageData();
 }
 const data64 = () => {
-  displayedStudentList = readDatabase(studentDB_64);
-  showPage(displayedStudentList);
+  unprocessedStudentList = readDatabase(studentDB_64);
+  setUpPageData();
 }
 
 // set up the top div...
@@ -42,9 +41,10 @@ const extras_createDiv = () => {
   studentSearchDiv.innerHTML = 
     '<button id="dataStandard">Standard Unit 2 challenge</button>' +
     '<button id="data44">44 Students</button>' +
-    '<button id="data64">64 Students</button>' + 
-    '</br></hr>';
+    '<button id="data64">64 Students</button>';
   dataSelectDiv.appendChild(studentSearchDiv);
+  dataSelectDiv.style.paddingBottom = '1rem';
+  dataSelectDiv.style.borderBottom = '2px #404040 solid';
   parentDiv.insertBefore(dataSelectDiv,initialPageHeaderDiv);
 }
 extras_createDiv();

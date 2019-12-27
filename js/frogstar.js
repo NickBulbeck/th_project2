@@ -1,5 +1,5 @@
 /* OK: the easter egg.
-   This file, and the two functions at the bottom, return a random name (and corresponding email address)
+   This file, and the functions at the bottom, return a random name (and corresponding email address)
    in the style of the Hitch-Hiker's Guide To The Galaxy. Original examples include Trin Tragula, Max
    Quordlepleen and, of course, Zaphod Beeblebrox. The other rule is that the name must be pronouncible in
    English.
@@ -70,8 +70,7 @@ dolmansaxlil = name => {
 // when the Douglas Adams Button is single-clicked, so that the array ca be returned
 // to its previous state on double-click
 hooloovoo = () => {
-  freeStandingPrism = displayedStudentList;
-  console.log(freeStandingPrism);
+  freeStandingPrism = Array.from(unprocessedStudentList);
 }
 
 
@@ -92,9 +91,8 @@ kakrafoon = () => {
 // This function basically undoes the effects of kakarafoon(); that is, it replaces all the 
 // Hitch-Hiker style names/emails with the originals from the currently selected data list
 golgafrincham = () => {
-  console.log(freeStandingPrism);
-  displayedStudentList = freeStandingPrism;
-  showPage(displayedStudentList);
+  unprocessedStudentArray = freeStandingPrism;
+  setUpPageData();
 }
 
 douglasAdamsButton.addEventListener("click", () => {
