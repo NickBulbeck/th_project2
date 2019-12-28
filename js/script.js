@@ -11,7 +11,7 @@ FSJS project 2 - List Filter and Pagination
       a variety of data sources. There are several different lists.
    
 ***/ 
-let pageLength = 10; // In principle it could be changed!
+let pageLength = 10; 
 const studentUl = document.querySelector('.student-list');
 let unprocessedStudentList = document.querySelectorAll('.student-item');
 // Since that is not an array, and we need the .slice method, we need to make an array from it:
@@ -97,19 +97,17 @@ const appendPageLinks = () => {
 
 
 // Firstly: I got fed up of constantly scrolling down on my laptop, whose screen is 
-// significantly smaller than that of our Mac!
+// significantly smaller than that of our Mac! This isn't really part of the challenge.
 if (window.screen.height < 1000) {
   pageLength = 5;
 }
 
 setUpPageData();
 
-console.log('height: ' + window.screen.height + '; width: ' + window.screen.width);
 
 /*
   Still to do:
-   - update event handlers on the link buttons to display stuff
-   - update the showPage function so that it horses li's conditionally and sets display.none
-   - better still, do the removing of stuff in the extras.js file
-   - further update it so that 
+  - Search feature (do this next).
+  - 44 and 64 students is not setting up the array
+  - Douglas Adams button doesn't reset
 */
