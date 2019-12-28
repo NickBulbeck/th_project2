@@ -93,9 +93,17 @@ const appendPageLinks = () => {
   linksUL.addEventListener('click',onClickingLink,false);
 }
 
-// Finally, running the code once the page has loaded:
+// Finally, running the code once the page has loaded.
+
+
+// Firstly: I got fed up of constantly scrolling down on my laptop, whose screen is 
+// significantly smaller than that of our Mac!
+if (window.screen.height < 1000) {
+  pageLength = 5;
+}
 
 setUpPageData();
+
 console.log('height: ' + window.screen.height + '; width: ' + window.screen.width);
 
 /*
