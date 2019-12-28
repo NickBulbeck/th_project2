@@ -12,6 +12,15 @@
    from the actual requirements. Obviously, "extras" isn't a proper filename.
 */
 
+// Clearing the old data from the DOM
+const clearUl = () => {
+  const oldList = studentUl.querySelectorAll("li");
+  for (let i=0; i<oldList.length; i++) {
+    const li = oldList[i];
+    studentUl.removeChild(li);
+  }
+}
+
 // Event-listeners for the buttons...
 const dataStandard = () => {
   document.location.reload(true);
@@ -19,10 +28,12 @@ const dataStandard = () => {
   setUpPageData();
 }
 const data44 = () => {
+  clearUl();
   unprocessedStudentList = readDatabase(studentDB_44);
   setUpPageData();
 }
 const data64 = () => {
+  clearUl();
   unprocessedStudentList = readDatabase(studentDB_64);
   setUpPageData();
 }

@@ -47,19 +47,18 @@ const setUpPageData = () => {
   showPage(paginatedStudentArray[0]);
 }
 
-const clearUl = () => {
-  const oldList = studentUl.querySelectorAll("li");
-  for (let i=0; i<oldList.length; i++) {
-    const li = oldList[i];
-    studentUl.removeChild(li);
+const hideLis = () => {
+  for (let i=0; i<unprocessedStudentList.length; i++) {
+    const li = unprocessedStudentList[i];
+    li.style.display = 'none';
   }
 }
 
 const showPage = (studentLiArray) => {
-  clearUl();
+  hideLis();
   for (let i=0; i<studentLiArray.length; i++) {
     const li = studentLiArray[i];
-    studentUl.appendChild(li);
+    li.style.display = '';
   }
 }
 
@@ -72,7 +71,8 @@ const appendPageLinks = () => {
   const onClickingLink = (event) => {
     const target = event.target;
     const pageIndex = parseInt(event.target.textContent) -1;
-    console.log(pageIndex);
+    const pageToDisplay = paginatedStudentArray[pageIndex];
+    showPage(pageToDisplay);
   }
   const parentDiv = document.querySelector('.page');
   const oldPageLinks = document.querySelector('.pagination');
@@ -96,7 +96,7 @@ const appendPageLinks = () => {
 // Finally, running the code once the page has loaded:
 
 setUpPageData();
-
+console.log('height: ' + window.screen.height + '; width: ' + window.screen.width);
 
 /*
   Still to do:
