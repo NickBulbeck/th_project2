@@ -32,6 +32,7 @@ body{
       border: 1px solid #eaeaea;
       padding: 8px 15px;
       font-size: 14px;
+      margin-right:16px;
     }
 
     .page-header .student-search button{
@@ -112,8 +113,17 @@ body{
       color: #4ba6c3;
     }
 
-    .pagination li a.active,
+    .pagination li a:active,
     .pagination li a:hover{
       background-color: #4ba6c3;
       color: #fff;
     }
+/* I don't entirely like this - especially the !important - but it'll do for now. The a:active didn't seem to be 
+doing anything and I couldn't get the class to override the color attribute. There'll be a reason for this, but
+that's for another sprint! */
+    .pagination-li-live {
+      background-color: #4ba6c3;
+      color: #fff !important;   
+    }
+
+

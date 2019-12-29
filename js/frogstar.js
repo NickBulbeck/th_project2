@@ -10,7 +10,7 @@
 let zaphod = 0;
 let freeStandingPrism = [];
 const douglasAdamsButton = document.getElementById("douglasAdamsButton");
-const blub = document.getElementById("douglasAdams");
+const blub = document.getElementsByTagName("h2")[0];
 
 const vowels = ['a','e','i','o','u','ai','ee','ea','oo','ou','oa','oi'];
 const openers = ['B','C','D','F','G','H','J','K','L','M','N','P','R','S','T','Qu',
@@ -67,7 +67,7 @@ dolmansaxlil = name => {
 }
 
 // This function is an initial setup. It sets up a copy of the current student array
-// when the Douglas Adams Button is single-clicked, so that the array ca be returned
+// when the Douglas Adams Button is single-clicked, so that the array can be returned
 // to its previous state on double-click
 hooloovoo = () => {
   freeStandingPrism = Array.from(unprocessedStudentList);
