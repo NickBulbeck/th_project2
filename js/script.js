@@ -3,6 +3,24 @@ Treehouse Techdegree:
 FSJS project 2 - List Filter and Pagination
 ******************************************/
 
+/*
+  REFACTORING - LATEST REQUIREMENTS
+  1) Refactor the displayPage function to accept a List and a Page. This means I can do the search later.
+  2) Refactor the page links thing to accept a list. Not sure you even need that - you only need the
+     number of pages, really.
+  3) Then, the search facility:
+    - create the event-handler for keypress for the input field;
+    - create the event-handler for submit for the button;
+    - create an output list of students;
+    - create a dummy item 0 that's created if the list is empty;
+    - set up a call to show-page and setup links if it's not;
+    - set up the Search Results heading and change the lettering on the
+      button to "display all students"
+    - set up the button to go back to setting up the whole page when it's
+      clicked for a second time
+
+*/
+
 
 /*** 
     Global variables
@@ -70,8 +88,9 @@ const appendPageLinks = () => {
     const pageIndex = parseInt(event.target.textContent) -1;
     const firstLi = pageIndex * pageLength;
     let lastLi = firstLi + pageLength;
-    if (lastLi >= htmlStudentList.length) {
-      lastLi = htmlStudentList.length;
+    // Can live without this next bit, but it saves a console error:
+    if (lastLi >= htmlStudentList.length) { 
+      lastLi = htmlStudentList.length;      
     }
     showPage(firstLi,lastLi);
   }
@@ -89,6 +108,7 @@ const appendPageLinks = () => {
     link.innerHTML = '<a href="#">' + pageNumber + '</a>';
     linksUL.appendChild(link);
   }
+  // Set the link for page 1 to 'active':
   linksUL.firstChild.firstChild.className = 'active';
   linksUL.addEventListener('click',onClickingLink,false);
 }
