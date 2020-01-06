@@ -51,7 +51,7 @@ const showPage = (startLi,endLi) => {
 
 
 /*** 
-   Create the `appendPageLinks function` to generate, append, and add 
+   The `appendPageLinks function` generates, appends, and adds
    functionality to the pagination buttons.
 ***/
 const appendPageLinks = () => {
@@ -73,10 +73,10 @@ const appendPageLinks = () => {
     if (lastLi >= htmlStudentList.length) {
       lastLi = htmlStudentList.length;
     }
-    console.log("firstLi: " + firstLi + "; lastLi: " + lastLi);
     showPage(firstLi,lastLi);
   }
-  // And now the actual code to set up the page links
+  // And now the actual code to set up the page links - this is run
+  // just once, called from setUpPageData()
   const page = document.querySelector('.page');
   const linkDiv = document.createElement('div');
   const linksUL = document.createElement('ul');
@@ -89,6 +89,7 @@ const appendPageLinks = () => {
     link.innerHTML = '<a href="#">' + pageNumber + '</a>';
     linksUL.appendChild(link);
   }
+  linksUL.firstChild.firstChild.className = 'active';
   linksUL.addEventListener('click',onClickingLink,false);
 }
 
