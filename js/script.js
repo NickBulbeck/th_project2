@@ -7,34 +7,21 @@ FSJS project 2 - List Filter and Pagination
 /*** 
     Global variables
 ***/ 
-let pageLength = 10; // In principle it could be changed!
-let unprocessedStudentList = document.querySelectorAll('.student-item');
-// Since that is not an array, and we need the .slice method, we need to make an array from it:
-let unprocessedStudentArray = Array.from(unprocessedStudentList);
-let paginatedStudentArray = [];
+let pageLength = 10; 
+let htmlStudentList = document.querySelectorAll('.student-item');
 
 /***
     Utility functions...
+     - numberOfPages() handles pageLength as a variable
 ***/
 
 const numberOfPages = () => {
-  let numberOfStudents = unprocessedStudentList.length;
+  let numberOfStudents = htmlStudentList.length;
   let pages = Math.floor(numberOfStudents / pageLength) + 1;
   return pages;
 }
 
-/***
-    Functions to establish the array of students ready for displaying
-***/
 
-const createPaginatedStudentArray = (unprocessedArray, pageLength) => {
-  let processedArray = [];
-  for (let i=0; i<unprocessedArray.length; i+=pageLength) {
-    let pageArray = unprocessedArray.slice(i,i+pageLength);
-    processedArray.push(pageArray)
-  }
-  return processedArray;
-}
 
 /*** 
    Create the `showPage` function to hide all of the items in the 
@@ -42,22 +29,22 @@ const createPaginatedStudentArray = (unprocessedArray, pageLength) => {
 
 const setUpPageData = () => {
   appendSearchThingy();
-  paginatedStudentArray = createPaginatedStudentArray(unprocessedStudentArray,pageLength);
   appendPageLinks();
-  showPage(paginatedStudentArray[0]);
+  hideLis();
+  showPage(0,pageLength);
 }
 
 const hideLis = () => {
-  for (let i=0; i<unprocessedStudentList.length; i++) {
-    const li = unprocessedStudentList[i];
+  for (let i=0; i<htmlStudentList.length; i++) {
+    const li = htmlStudentList[i];
     li.style.display = 'none';
   }
 }
 
-const showPage = (studentLiArray) => {
+const showPage = (startLi,endLi) => {
   hideLis();
-  for (let i=0; i<studentLiArray.length; i++) {
-    const li = studentLiArray[i];
+  for (let i=startLi; i<endLi; i++) {
+    const li = htmlStudentList[i];
     li.style.display = '';
   }
 }
@@ -68,28 +55,35 @@ const showPage = (studentLiArray) => {
    functionality to the pagination buttons.
 ***/
 const appendPageLinks = () => {
+  // wee function to remove the 'active' class from all links when one of them is clicked
   const clearLinkClasses = () => {
     links = linksUL.querySelectorAll('a');
     for (let i=0; i<links.length; i++) {
       links[i].className = '';
     }
   }
+  // wee function to respond to a click on the list of links
   const onClickingLink = (event) => {
-    clearLinkClasses();
-    const target = event.target;
-    console.log(target);
-    target.className = 'pagination-li-live';
+    clearLinkClasses(); // Remove the 'active' class from all links
+    const target = event.target; // The target is specifically an <a> element, not its parent <li>
+    target.className = 'active'; // add the 'active' class to the link just clicked
     const pageIndex = parseInt(event.target.textContent) -1;
-    const pageToDisplay = paginatedStudentArray[pageIndex];
-    showPage(pageToDisplay);
+    const firstLi = pageIndex * pageLength;
+    let lastLi = firstLi + pageLength;
+    if (lastLi >= htmlStudentList.length) {
+      lastLi = htmlStudentList.length;
+    }
+    console.log("firstLi: " + firstLi + "; lastLi: " + lastLi);
+    showPage(firstLi,lastLi);
   }
-  const parentDiv = document.querySelector('.page');
+  // And now the actual code to set up the page links
+  const page = document.querySelector('.page');
   const linkDiv = document.createElement('div');
   const linksUL = document.createElement('ul');
-  parentDiv.appendChild(linkDiv);
+  page.appendChild(linkDiv);
   linkDiv.classList.add('pagination');
   linkDiv.appendChild(linksUL);
-  for (let i=0; i<numberOfPages(); i++) {
+  for (let i=0; i<numberOfPages(); i++) { 
     let link = document.createElement('li');
     let pageNumber = i+1;
     link.innerHTML = '<a href="#">' + pageNumber + '</a>';
@@ -98,11 +92,12 @@ const appendPageLinks = () => {
   linksUL.addEventListener('click',onClickingLink,false);
 }
 
-const appendSearchThingy = () => {
+const appendSearchThingy = () => { // Well, **I like** the name.
   const pageHeaderDiv = document.querySelector('.page-header');
   const searchDiv = document.createElement('div');
   searchDiv.className = 'student-search';
   searchDiv.innerHTML = '<input id="search" type="text" placeholder="Enter search text">' +
+                        '<button id="searchButton">Display search results</button>' +
                         '<button id="douglasAdamsButton">Douglas Adams Button</button>';
   pageHeaderDiv.appendChild(searchDiv);
 }     
@@ -111,23 +106,14 @@ const appendSearchThingy = () => {
 // Finally, running the code once the page has loaded.
 
 
-// Firstly: I got fed up of constantly scrolling down on my laptop, whose screen is 
-// significantly smaller than that of our Mac! So, on a smaller screen, I've gone for
-// setting 5 items per page instead of 10. It's also a good test of the code.
-// (Besides, it seemed a shame to set up a variable and then not vary it.)
+// Firstly: I got fed up of constantly scrolling down on my MacBook Air screen!
 if (window.screen.height < 1000) {
   pageLength = 5;
 }
 setUpPageData();
 
 
-/*
-  Still to do:
-  - refactor so that displayPage doesn't set up a secondary array, but uses the parameters
-      stated in the instructions. The secondary array is not a better idea. However, I COULD
-      use it in frogstar.js. Probably not, though.
-  - refactor so that the page is displayed in a much simpler way.
-  - add a submit button to the search box
-  - set up keypress event-handler for the input box
 
-*/
+
+
+
