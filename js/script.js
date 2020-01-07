@@ -5,9 +5,7 @@ FSJS project 2 - List Filter and Pagination
 
 /*
   REFACTORING - LATEST REQUIREMENTS
-  1) Refactor the displayPage function to accept a List and a Page. This means I can do the search later.
-  2) Refactor the page links thing to accept a list. Not sure you even need that - you only need the
-     number of pages, really.
+
   3) Then, the search facility:
     - create the event-handler for keypress for the input field;
     - create the event-handler for submit for the button;
@@ -18,51 +16,75 @@ FSJS project 2 - List Filter and Pagination
       button to "display all students"
     - set up the button to go back to setting up the whole page when it's
       clicked for a second time
-
 */
 
 
 /*** 
     Global variables
 ***/ 
-let pageLength = 10; 
+
+// The number of list items displayed on the screen. See also checkForSmallScreen().
+// It could be made dynamically variable using the window resize event, for instance,
+// in a future release. It defaults to 10 as per the Project 2 starting requirements.
+let pageLength = 10;
+// The definitive list of student <li> elements as supplied in index.html for the
+// Project 2 challenge. In practice, this data would be read in from a database.
+// But that's in a later unit of the course!
 let htmlStudentList = document.querySelectorAll('.student-item');
 
 /***
     Utility functions...
-     - numberOfPages() handles pageLength as a variable
+     - numberOfPages() handles pageLength as a variable, which I introduced for
+       small screens (like my laptop) where 10 items is too many.
 ***/
-
+// 
 const numberOfPages = () => {
   let numberOfStudents = htmlStudentList.length;
   let pages = Math.floor(numberOfStudents / pageLength) + 1;
   return pages;
 }
-
-
+// More, shorter, pages is perhaps a better user experience on a small laptop screen:
+const checkForSmallScreen = () => {
+  if (window.screen.height < 1000) {
+    pageLength = 5;
+  }
+}
 
 /*** 
-   Create the `showPage` function to hide all of the items in the 
+     
 ***/
 
 const setUpPageData = () => {
+  checkForSmallScreen();
   appendSearchThingy();
-  appendPageLinks();
-  hideLis();
-  showPage(0,pageLength);
+  appendPageLinks(htmlStudentList);
+  showPage(htmlStudentList,1);
 }
 
-const hideLis = () => {
+const showPage = (list,pageNumber) => {
+  firstHideAllTheLis();
+  const numberOfStudents = list.length;
+  const startLi = (pageNumber -1) * pageLength;
+  let endLi = startLi + pageLength;
+  // This next if-loop isn't absolutely necessary, but it does save an untidy
+  // potential console error when selecting the final page (which will typically
+  // be incomplete). This is why endLi is a 'let', not a 'const'.
+  if (endLi > numberOfStudents) {
+    endLi = numberOfStudents;
+  }
+  nowDisplaySelectedLis(list,startLi,endLi);
+}
+
+const firstHideAllTheLis = () => {
   for (let i=0; i<htmlStudentList.length; i++) {
     const li = htmlStudentList[i];
     li.style.display = 'none';
   }
 }
 
-const showPage = (startLi,endLi) => {
-  hideLis();
+const nowDisplaySelectedLis = (list,startLi,endLi) => {
   for (let i=startLi; i<endLi; i++) {
-    const li = htmlStudentList[i];
+    const li = list[i];
     li.style.display = '';
   }
 }
@@ -72,30 +94,27 @@ const showPage = (startLi,endLi) => {
    The `appendPageLinks function` generates, appends, and adds
    functionality to the pagination buttons.
 ***/
-const appendPageLinks = () => {
-  // wee function to remove the 'active' class from all links when one of them is clicked
+const appendPageLinks = (activeList) => {
+  // appendPageLinks uses the 'activeList' parameter because the app may be paginating a list of search
+  // results which, by definition, is only a subset of the full list of students.
+  //
+  // First, a wee utility function that clears the 'active' class from all the links
   const clearLinkClasses = () => {
     links = linksUL.querySelectorAll('a');
     for (let i=0; i<links.length; i++) {
       links[i].className = '';
     }
   }
-  // wee function to respond to a click on the list of links
+  // The click-event handler:
   const onClickingLink = (event) => {
     clearLinkClasses(); // Remove the 'active' class from all links
     const target = event.target; // The target is specifically an <a> element, not its parent <li>
     target.className = 'active'; // add the 'active' class to the link just clicked
-    const pageIndex = parseInt(event.target.textContent) -1;
-    const firstLi = pageIndex * pageLength;
-    let lastLi = firstLi + pageLength;
-    // Can live without this next bit, but it saves a console error:
-    if (lastLi >= htmlStudentList.length) { 
-      lastLi = htmlStudentList.length;      
-    }
-    showPage(firstLi,lastLi);
+    const pageNumber = parseInt(event.target.textContent);
+    showPage(activeList,pageNumber);
   }
   // And now the actual code to set up the page links - this is run
-  // just once, called from setUpPageData()
+  // just once, called from setUpPageData() which in turn runs when the page loads.
   const page = document.querySelector('.page');
   const linkDiv = document.createElement('div');
   const linksUL = document.createElement('ul');
@@ -113,7 +132,8 @@ const appendPageLinks = () => {
   linksUL.addEventListener('click',onClickingLink,false);
 }
 
-const appendSearchThingy = () => { // Well, **I like** the name.
+// Add 
+const appendSearchThingy = () => { 
   const pageHeaderDiv = document.querySelector('.page-header');
   const searchDiv = document.createElement('div');
   searchDiv.className = 'student-search';
@@ -124,13 +144,8 @@ const appendSearchThingy = () => { // Well, **I like** the name.
 }     
 
 
-// Finally, running the code once the page has loaded.
+// Finally, run the code once the page has loaded.
 
-
-// Firstly: I got fed up of constantly scrolling down on my MacBook Air screen!
-if (window.screen.height < 1000) {
-  pageLength = 5;
-}
 setUpPageData();
 
 
