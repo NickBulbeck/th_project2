@@ -8,8 +8,7 @@ FSJS project 2 - List Filter and Pagination
 
   3) Then, the search facility:
     - create a dummy item 0 that's created if the list is empty;
-    - extend appendPageLinks and searchResultThingy to delete any existing 
-      ones before rendering any;
+    - fix the bug whereby a blank page is created when there's an exact number of pages
 */
 
 
@@ -43,6 +42,15 @@ const numberOfPages = (list) => {
 const checkForSmallScreen = () => {
   if (window.screen.height < 1000) {
     pageLength = 5;
+  }
+}
+
+// To re-create an element, it's useful to be able to get rid of the old one...
+const clearElement = (id) => {
+  const element = document.getElementById(id);
+  if (element) {
+    const parent = element.parentNode;
+    parent.removeChild(element);
   }
 }
 
@@ -111,8 +119,10 @@ const appendPageLinks = (activeList) => {
   }
   // And now the actual code to set up the page links - this is run in just one
   // circumstance, called from setUpPageData() which in turn runs when the page loads.
+  clearElement('linkDiv');
   const page = document.querySelector('.page');
   const linkDiv = document.createElement('div');
+  linkDiv.setAttribute('id','linkDiv');
   const linksUL = document.createElement('ul');
   page.appendChild(linkDiv);
   linkDiv.classList.add('pagination');
@@ -131,7 +141,9 @@ const appendPageLinks = (activeList) => {
 // Add the search thingy
 const appendSearchThingy = () => { 
   const pageHeaderDiv = document.querySelector('.page-header');
+  clearElement('searchDiv');
   const searchDiv = document.createElement('div');
+  searchDiv.setAttribute('id','searchDiv');
   searchDiv.className = 'student-search';
   searchDiv.innerHTML = '<input id="searchField" type="text" placeholder="Enter search text">' +
                         '<button id="searchButton">Display search results</button>' +
