@@ -119,6 +119,7 @@ const golgafrincham = () => {
   }
 }
 
+// This funcion creates the Douglas Adams button and appends it at the top of the page.
 const trillian = () => {
   const pageHeaderDiv = document.querySelector('.page-header');
   const frogstarDiv = document.createElement('div');
