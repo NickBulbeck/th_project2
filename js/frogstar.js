@@ -20,7 +20,6 @@
 */
 let zaphod = 0;
 let freeStandingPrism = [];
-let douglasAdamsButton = document.getElementById("douglasAdamsButton");
 const blub = document.getElementsByTagName("h2")[0];
 let students = document.querySelectorAll('.student-details');
 
@@ -33,15 +32,15 @@ const closers = ['b','ck','d','ff','g','j','l','m','rm','n','rn','p','lp','rp','
                   's','ts','rs','t','rt','ls','lt','rv','rx','rz','z','sh'
                   ,'dle','ble','ffle','x'];
 
-aVowel = () => {
+const aVowel = () => {
   return vowels[Math.floor(Math.random() * vowels.length)];
 }
 
-anOpener = () => {
+const anOpener = () => {
   return openers[Math.floor(Math.random() * openers.length)];
 }
 
-aCloser = () => {
+const aCloser = () => {
   return closers[Math.floor(Math.random() * closers.length)];
 }
 
@@ -51,7 +50,7 @@ aCloser = () => {
 // hence lintilla and allitnil.
 // There is an outside chance that the resulting name will contain an expletive. It's happened
 // in testing, albeit very rarely. Never mind.
-beeblebrox = () => {
+const beeblebrox = () => {
   let quordle = "";
   for (let i = 0; i < 10; i++) {
     quordle = aCloser();
@@ -73,7 +72,7 @@ beeblebrox = () => {
 
 // This function takes in a name and converts it into an email address of the form forname.surname@... etc.
 // The significance of the email address will be grasped by afficionados of the Hitch-Hiker Trilogy.
-dolmansaxlil = name => {
+const dolmansaxlil = name => {
   let gargravarr = name.toLowerCase().replace(" ",".");
   gargravarr += "@dolmansaxlil.frogstar";
   return gargravarr;
@@ -82,7 +81,7 @@ dolmansaxlil = name => {
 // This function is an initial setup. It sets up a copy of the current student array
 // when the Douglas Adams Button is single-clicked, so that the array can be returned
 // to its previous state on double-click.
-hooloovoo = () => {
+const hooloovoo = () => {
   // Set up freeStandingPrism as an array of all the real values. This is a true array,
   // with names and emails passed by value and not reference. We can then use it to store the 
   // original values in before we kakrafoon everyone.
@@ -96,7 +95,7 @@ hooloovoo = () => {
 
 
 // This function replaces all the names in the document with Hitch-Hiker style alternatives (and emails likewise)
-kakrafoon = () => {
+const kakrafoon = () => {
   blub.textContent = "Mostly Harmless";
   for (let i=0; i<students.length; i++) {
     let studentName = students[i].querySelector('h3');
@@ -110,7 +109,7 @@ kakrafoon = () => {
 
 // This function basically undoes the effects of kakarafoon(); that is, it replaces all the 
 // Hitch-Hiker style names/emails with the originals from the currently selected data list
-golgafrincham = () => {
+const golgafrincham = () => {
   blub.textContent = "Students";
   for (let i=0; i<students.length; i++) {
     let name = freeStandingPrism[i][0];
@@ -120,21 +119,32 @@ golgafrincham = () => {
   }
 }
 
-douglasAdamsButton.addEventListener("click", () => {
-  zaphod++;
-  if (1 === zaphod) {
-      clickTimer = setTimeout( () =>{
-        kakrafoon();
+const trillian = () => {
+  const pageHeaderDiv = document.querySelector('.page-header');
+  const frogstarDiv = document.createElement('div');
+  frogstarDiv.setAttribute('id','frogstarDiv');
+  frogstarDiv.className = 'student-search';
+  frogstarDiv.innerHTML = '<button id="douglasAdamsButton">Douglas Adams Button</button>';
+  pageHeaderDiv.appendChild(frogstarDiv);
+  const douglasAdamsButton = document.getElementById("douglasAdamsButton");
+  douglasAdamsButton.addEventListener("click", () => {
+    zaphod++;
+    if (1 === zaphod) {
+        clickTimer = setTimeout( () =>{
+          kakrafoon();
+          zaphod = 0;
+      }, 185);
+    } else if (zaphod === 2) {
+        golgafrincham();
         zaphod = 0;
-    }, 185);
-  } else if (zaphod === 2) {
-      golgafrincham();
-      zaphod = 0;
-      clearTimeout(clickTimer);
-  }
-});
+        clearTimeout(clickTimer);
+    }
+  });
+}
 
 
+// Create the Douglas Adams button
+trillian()
 // call hooloovoo to store the real names/emails so that we can restore them when the
 // Douglas Adams Button is double-clicked:
 hooloovoo();

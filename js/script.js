@@ -147,18 +147,12 @@ const appendSearchThingy = () => {
   searchDiv.setAttribute('id','searchDiv');
   searchDiv.className = 'student-search';
   searchDiv.innerHTML = '<input id="searchField" type="text" placeholder="Enter search text">' +
-                        '<button id="searchButton">Display search results</button>' +
-                        '<button id="douglasAdamsButton">Douglas Adams Button</button>';
+                        '<button id="searchButton">Display search results</button>';
   pageHeaderDiv.appendChild(searchDiv);
   const searchButton = document.getElementById('searchButton');
   searchButton.addEventListener('click',onClickingSearchButton,false);
   const searchField = document.getElementById('searchField');
   searchField.addEventListener('input',onEnteringSearchText,false);
-  // Deleting the Douglas Adams button removes its event-listener. Re-attaching it creates too
-  // many problems to be solved simply without excessive refactoring. So, this is a known bug.
-  // It's only a bit of fun anyway!
-  const defunctButton = document.getElementById('douglasAdamsButton');
-  defunctButton.style.display = 'none';
 }     
 
 // Search event-handlers and utility functions
@@ -171,10 +165,8 @@ const onClickingSearchButton = (event) => {
     if (searchResultsList.length === 0) {
       displayNoResults();
     }
-    event.target.previousElementSibling.value = '';
   } else {
     setUpPageData();
-    // At this point, the event-handler has disappeared fae the Douglas Adams button.
   }
 }
 const onEnteringSearchText = (event) => {
