@@ -1,4 +1,6 @@
-/* OK: the easter egg.
+/* 
+   OK: the easter egg.
+
    This file, and the functions at the bottom, return a random name (and corresponding email address)
    in the style of the Hitch-Hiker's Guide To The Galaxy. Original examples include Trin Tragula, Max
    Quordlepleen and, of course, Zaphod Beeblebrox. The other rule is that the name must be pronouncible in
@@ -10,11 +12,15 @@
    So: how come it works no matter which page is currently displayed? Because the querySelectorAll
    method doesn't create a true array; it creates a live collection of nodes. "Live" means that they
    are passed by reference, not value, and are constantly updated whenever the DOM is itself updated
-   for any reason.
+   for any reason. I think there are browsers that don't work like this, however, in which case it
+   would likely break.
+
+   When the button is double-clicked, the DOM is restored to its native state and the names
+   and email addresses revert to normal.
 */
 let zaphod = 0;
 let freeStandingPrism = [];
-const douglasAdamsButton = document.getElementById("douglasAdamsButton");
+let douglasAdamsButton = document.getElementById("douglasAdamsButton");
 const blub = document.getElementsByTagName("h2")[0];
 let students = document.querySelectorAll('.student-details');
 
@@ -43,8 +49,8 @@ aCloser = () => {
 // in -ble, -dle or -fle (ie, length > 2 characters). I think we can all agree that those names are funnier.
 // They're also easier to pronounce if you don't have a vowel pair followed by a consonant pair (e.g. 'ealv'); 
 // hence lintilla and allitnil.
-// There is an outside chance that the resulting name will contain an offensive syllable. It's happened
-// in testing, albeit very rarely.
+// There is an outside chance that the resulting name will contain an expletive. It's happened
+// in testing, albeit very rarely. Never mind.
 beeblebrox = () => {
   let quordle = "";
   for (let i = 0; i < 10; i++) {
@@ -127,6 +133,7 @@ douglasAdamsButton.addEventListener("click", () => {
       clearTimeout(clickTimer);
   }
 });
+
 
 // call hooloovoo to store the real names/emails so that we can restore them when the
 // Douglas Adams Button is double-clicked:

@@ -7,8 +7,7 @@ FSJS project 2 - List Filter and Pagination
   REFACTORING - LATEST REQUIREMENTS
 
   3) Then, the search facility:
-    - create a dummy item 0 that's created if the list is empty;
-    - fix the bug whereby a blank page is created when there's an exact number of pages
+    - fix the bug whereby the easter egg doesn't work when you click display all students
 */
 
 
@@ -34,8 +33,11 @@ let searchResultsList = document.querySelectorAll('.search-output');
 ***/
 // 
 const numberOfPages = (list) => {
-  let numberOfStudents = list.length;
+  const numberOfStudents = list.length;
   let pages = Math.floor(numberOfStudents / pageLength) + 1;
+  if ((numberOfStudents % pageLength ===0) && (pages > 1) ) {
+    pages--;
+  }
   return pages;
 }
 // More, shorter, pages is perhaps a better user experience on a small laptop screen:
@@ -95,8 +97,7 @@ const nowDisplaySelectedLis = (list,startLi,endLi) => {
 
 
 /*** 
-   The `appendPageLinks function` generates, appends, and adds
-   functionality to the pagination buttons.
+   appendPageLinks() generates, appends, and adds functionality to the pagination buttons.
 ***/
 const appendPageLinks = (activeList) => {
   // appendPageLinks uses the 'activeList' parameter because the app may be paginating a list of search
@@ -153,20 +154,27 @@ const appendSearchThingy = () => {
   searchButton.addEventListener('click',onClickingSearchButton,false);
   const searchField = document.getElementById('searchField');
   searchField.addEventListener('input',onEnteringSearchText,false);
+  // Deleting the Douglas Adams button removes its event-listener. Re-attaching it creates too
+  // many problems to be solved simply without excessive refactoring. So, this is a known bug.
+  // It's only a bit of fun anyway!
+  const defunctButton = document.getElementById('douglasAdamsButton');
+  defunctButton.style.display = 'none';
 }     
 
 // Search event-handlers and utility functions
 const onClickingSearchButton = (event) => {
-  if (event.target.textContent.search('results') >= 0) {
+  clearElement('noSearchResults');
+  if (event.target.textContent.search('search') >= 0) {
     event.target.textContent = 'Display all students';
     appendPageLinks(searchResultsList);
     showPage(searchResultsList,1);
+    if (searchResultsList.length === 0) {
+      displayNoResults();
+    }
     event.target.previousElementSibling.value = '';
   } else {
-    // event.target.textContent = 'Display search results';
-    // appendPageLinks(htmlStudentList);
-    // showPage(htmlStudentList,1);
     setUpPageData();
+    // At this point, the event-handler has disappeared fae the Douglas Adams button.
   }
 }
 const onEnteringSearchText = (event) => {
@@ -188,20 +196,16 @@ const onEnteringSearchText = (event) => {
     searchButton.textContent = `Display ${results} search results`;
   }
 }
-
-// This isn't working yet:
-// const formatEmptySearchResultsList = () => {
-//   const ul = document.querySelector('.student-list');
-//   const blankLi = document.createElement('li');
-//   blankLi.setAttribute('id','noSearchResults');
-//   blankLi.className = 'student-item';
-//   blankLi.style.display = 'none';
-//   const blankDiv = document.createElement('div');
-//   blankDiv.className = 'student-item cf student-details'
-//   blankDiv.innerHTML = '<h3>No results found matching your search</h3>';
-//   blankLi.appendChild(blankDiv);
-//   ul.insertBefore(blankLi,ul.firstChild);
-// }
+const displayNoResults = () => {
+  noSearchResults = document.createElement('div');
+  noSearchResults.setAttribute('id','noSearchResults');
+  noSearchResults.className = 'student-details';
+  noSearchResults.innerHTML = '<h3>No results found to match your search.</h3>';
+  const ul = document.querySelector('.student-list');
+  const page = document.querySelector('.page');
+  page.insertBefore(noSearchResults,ul);
+  clearElement('linkDiv');
+}
 
 
 // Finally, run the code once the page has loaded.
