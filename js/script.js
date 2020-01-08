@@ -7,15 +7,9 @@ FSJS project 2 - List Filter and Pagination
   REFACTORING - LATEST REQUIREMENTS
 
   3) Then, the search facility:
-    - create the event-handler for keypress for the input field;
-    - create the event-handler for submit for the button;
-    - create an output list of students;
     - create a dummy item 0 that's created if the list is empty;
-    - set up a call to show-page and setup links if it's not;
-    - set up the Search Results heading and change the lettering on the
-      button to "display all students"
-    - set up the button to go back to setting up the whole page when it's
-      clicked for a second time
+    - extend appendPageLinks and searchResultThingy to delete any existing 
+      ones before rendering any;
 */
 
 
@@ -30,7 +24,9 @@ let pageLength = 10;
 // The definitive list of student <li> elements as supplied in index.html for the
 // Project 2 challenge. In practice, this data would be read in from a database.
 // But that's in a later unit of the course!
+// The alternative list is the result of a search.
 let htmlStudentList = document.querySelectorAll('.student-item');
+let searchResultsList = document.querySelectorAll('.search-output');
 
 /***
     Utility functions...
@@ -38,8 +34,8 @@ let htmlStudentList = document.querySelectorAll('.student-item');
        small screens (like my laptop) where 10 items is too many.
 ***/
 // 
-const numberOfPages = () => {
-  let numberOfStudents = htmlStudentList.length;
+const numberOfPages = (list) => {
+  let numberOfStudents = list.length;
   let pages = Math.floor(numberOfStudents / pageLength) + 1;
   return pages;
 }
@@ -51,7 +47,7 @@ const checkForSmallScreen = () => {
 }
 
 /*** 
-     
+  Need some appropriate comments here.
 ***/
 
 const setUpPageData = () => {
@@ -113,15 +109,15 @@ const appendPageLinks = (activeList) => {
     const pageNumber = parseInt(event.target.textContent);
     showPage(activeList,pageNumber);
   }
-  // And now the actual code to set up the page links - this is run
-  // just once, called from setUpPageData() which in turn runs when the page loads.
+  // And now the actual code to set up the page links - this is run in just one
+  // circumstance, called from setUpPageData() which in turn runs when the page loads.
   const page = document.querySelector('.page');
   const linkDiv = document.createElement('div');
   const linksUL = document.createElement('ul');
   page.appendChild(linkDiv);
   linkDiv.classList.add('pagination');
   linkDiv.appendChild(linksUL);
-  for (let i=0; i<numberOfPages(); i++) { 
+  for (let i=0; i<numberOfPages(activeList); i++) { 
     let link = document.createElement('li');
     let pageNumber = i+1;
     link.innerHTML = '<a href="#">' + pageNumber + '</a>';
@@ -132,16 +128,68 @@ const appendPageLinks = (activeList) => {
   linksUL.addEventListener('click',onClickingLink,false);
 }
 
-// Add 
+// Add the search thingy
 const appendSearchThingy = () => { 
   const pageHeaderDiv = document.querySelector('.page-header');
   const searchDiv = document.createElement('div');
   searchDiv.className = 'student-search';
-  searchDiv.innerHTML = '<input id="search" type="text" placeholder="Enter search text">' +
+  searchDiv.innerHTML = '<input id="searchField" type="text" placeholder="Enter search text">' +
                         '<button id="searchButton">Display search results</button>' +
                         '<button id="douglasAdamsButton">Douglas Adams Button</button>';
   pageHeaderDiv.appendChild(searchDiv);
+  const searchButton = document.getElementById('searchButton');
+  searchButton.addEventListener('click',onClickingSearchButton,false);
+  const searchField = document.getElementById('searchField');
+  searchField.addEventListener('input',onEnteringSearchText,false);
 }     
+
+// Search event-handlers and utility functions
+const onClickingSearchButton = (event) => {
+  if (event.target.textContent.search('results') >= 0) {
+    event.target.textContent = 'Display all students';
+    appendPageLinks(searchResultsList);
+    showPage(searchResultsList,1);
+    event.target.previousElementSibling.value = '';
+  } else {
+    // event.target.textContent = 'Display search results';
+    // appendPageLinks(htmlStudentList);
+    // showPage(htmlStudentList,1);
+    setUpPageData();
+  }
+}
+const onEnteringSearchText = (event) => {
+  const searchText = event.target.value.toLowerCase();
+  const searchButton = event.target.nextElementSibling;
+  for (i=0; i<htmlStudentList.length; i++) {
+    const li = htmlStudentList[i]
+    const h3 = li.getElementsByTagName('h3')[0].textContent.toLowerCase();
+    li.className = 'student-item cf';
+    if (h3.search(searchText) >= 0) {
+      li.className = 'search-output student-item cf';
+    }
+  }
+  searchResultsList = document.querySelectorAll('.search-output');
+  const results = searchResultsList.length;
+  if (results === 1) {
+    searchButton.textContent = 'Display 1 search result';
+  } else {
+    searchButton.textContent = `Display ${results} search results`;
+  }
+}
+
+// This isn't working yet:
+// const formatEmptySearchResultsList = () => {
+//   const ul = document.querySelector('.student-list');
+//   const blankLi = document.createElement('li');
+//   blankLi.setAttribute('id','noSearchResults');
+//   blankLi.className = 'student-item';
+//   blankLi.style.display = 'none';
+//   const blankDiv = document.createElement('div');
+//   blankDiv.className = 'student-item cf student-details'
+//   blankDiv.innerHTML = '<h3>No results found matching your search</h3>';
+//   blankLi.appendChild(blankDiv);
+//   ul.insertBefore(blankLi,ul.firstChild);
+// }
 
 
 // Finally, run the code once the page has loaded.
