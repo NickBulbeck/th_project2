@@ -28,8 +28,6 @@ let searchResultsList = document.querySelectorAll('.search-output');
 
 /***
     Utility functions...
-     - numberOfPages() handles pageLength as a variable, which I introduced for
-       small screens (like my laptop) where 10 items is too many.
 ***/
 // 
 const numberOfPages = (list) => {
