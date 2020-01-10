@@ -72,7 +72,8 @@ const showPage = (list,pageNumber) => {
   let endLi = startLi + pageLength;
   // This next if-loop isn't absolutely necessary, but it does save an untidy
   // potential console error when selecting the final page (which will typically
-  // be incomplete). This is why endLi is a 'let', not a 'const'.
+  // be incomplete, so endLi is greater than the number of items in the array and
+  // ). This is why endLi is a 'let', not a 'const'.
   if (endLi > numberOfStudents) {
     endLi = numberOfStudents;
   }
@@ -94,14 +95,15 @@ const nowDisplaySelectedLis = (list,startLi,endLi) => {
 }
 
 
-/*** 
+/******************************************************************************************
    appendPageLinks() generates, appends, and adds functionality to the pagination buttons.
-***/
+******************************************************************************************/
 const appendPageLinks = (activeList) => {
   // appendPageLinks uses the 'activeList' parameter because the app may be paginating a list of search
   // results which, by definition, is only a subset of the full list of students.
   //
-  // First, a wee utility function that clears the 'active' class from all the links
+  // First, a wee utility function that clears the 'active' class from all the links (so that a specific
+  // one can then be made 'active')
   const clearLinkClasses = () => {
     links = linksUL.querySelectorAll('a');
     for (let i=0; i<links.length; i++) {
@@ -111,13 +113,12 @@ const appendPageLinks = (activeList) => {
   // The click-event handler:
   const onClickingLink = (event) => {
     clearLinkClasses(); // Remove the 'active' class from all links
-    const target = event.target; // The target is specifically an <a> element, not its parent <li>
+    const target = event.target; // The target is specifically an <a> element, not its parent <li>.
     target.className = 'active'; // add the 'active' class to the link just clicked
     const pageNumber = parseInt(event.target.textContent);
     showPage(activeList,pageNumber);
   }
-  // And now the actual code to set up the page links - this is run in just one
-  // circumstance, called from setUpPageData() which in turn runs when the page loads.
+  // And now the actual code to set up the page links.
   clearElement('linkDiv');
   const page = document.querySelector('.page');
   const linkDiv = document.createElement('div');
@@ -137,7 +138,7 @@ const appendPageLinks = (activeList) => {
   linksUL.addEventListener('click',onClickingLink,false);
 }
 
-// Add the search thingy
+// Add the search thingy. 
 const appendSearchThingy = () => { 
   const pageHeaderDiv = document.querySelector('.page-header');
   clearElement('searchDiv');
@@ -164,10 +165,14 @@ const onClickingSearchButton = (event) => {
       displayNoResults();
     }
   } else {
+    clearSearchResultsList()
     setUpPageData();
   }
 }
+
 const onEnteringSearchText = (event) => {
+  // the .toLowerCase() method is used in the searchText (next line) AND in the searching
+  // loop itself to make a case-insensitive search.
   const searchText = event.target.value.toLowerCase();
   const searchButton = event.target.nextElementSibling;
   for (i=0; i<htmlStudentList.length; i++) {
@@ -180,12 +185,27 @@ const onEnteringSearchText = (event) => {
   }
   searchResultsList = document.querySelectorAll('.search-output');
   const results = searchResultsList.length;
+  // this next bit changes the text on the button. The if-loop looks cumbersome, but it 
+  // avoids the ungrammatical 'Display 1 search results'.
   if (results === 1) {
     searchButton.textContent = 'Display 1 search result';
   } else {
     searchButton.textContent = `Display ${results} search results`;
   }
 }
+
+const clearSearchResultsList = () => {
+  for (let i=0; i<searchResultsList.length; i++) {
+    searchResultsList[i].className = 'student-item cf';
+  }
+  searchResultsList = document.querySelectorAll('.search-output');
+}
+
+
+
+// displayNoResults displays a message when no results match a search, and deletes the pagination links.
+// It doesn't need to hide the student details <li>'s themselves because this is achieved in
+// onClickingSearchButton by displaying a results list that is empty.
 const displayNoResults = () => {
   noSearchResults = document.createElement('div');
   noSearchResults.setAttribute('id','noSearchResults');
@@ -196,7 +216,6 @@ const displayNoResults = () => {
   page.insertBefore(noSearchResults,ul);
   clearElement('linkDiv');
 }
-
 
 // Finally, run the code once the page has loaded.
 
