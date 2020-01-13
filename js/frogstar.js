@@ -4,7 +4,7 @@
    This file, and the functions at the bottom, return a random name (and corresponding email address)
    in the style of the Hitch-Hiker's Guide To The Galaxy. Original examples include Trin Tragula, Max
    Quordlepleen and, of course, Zaphod Beeblebrox. The other rule is that the name must be pronouncible in
-   English.
+   English. In principle this may give rise to the odd obscenity. But it's very rare. 
 
    The function and variable names adhere to good practice in no sense whatsoever. As Douglas Adams
    might have put it: they make intuitive sense in the same way that 5-dimensional geometry doesn't.
@@ -17,6 +17,8 @@
 
    When the button is double-clicked, the DOM is restored to its native state and the names
    and email addresses revert to normal.
+
+   Remember: none of this adds any business value whatsoever. It's all a bit of fun.
 */
 let zaphod = 0;
 let freeStandingPrism = [];
@@ -46,10 +48,8 @@ const aCloser = () => {
 
 // This function returns a random name. The reason for the for-loop is to increase the likelihood of a syllable ending
 // in -ble, -dle or -fle (ie, length > 2 characters). I think we can all agree that those names are funnier.
-// They're also easier to pronounce if you don't have a vowel pair followed by a consonant pair (e.g. 'ealv'); 
-// hence lintilla and allitnil.
-// There is an outside chance that the resulting name will contain an expletive. It's happened
-// in testing, albeit very rarely. Never mind.
+// Hence lintilla and allitnil.
+
 const beeblebrox = () => {
   let quordle = "";
   for (let i = 0; i < 10; i++) {

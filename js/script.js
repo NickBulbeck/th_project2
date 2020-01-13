@@ -3,27 +3,20 @@ Treehouse Techdegree:
 FSJS project 2 - List Filter and Pagination
 ******************************************/
 
-/*
-  REFACTORING - LATEST REQUIREMENTS
-
-  3) Then, the search facility:
-    - fix the bug whereby the easter egg doesn't work when you click display all students
-*/
-
 
 /*** 
     Global variables
 ***/ 
 
 // The number of list items displayed on the screen. See also checkForSmallScreen().
-// It could be made dynamically variable using the window resize event, for instance,
-// in a future release. It defaults to 10 as per the Project 2 starting requirements.
+// It defaults to 10 as per the Project 2 starting requirements, but is reset to 5
+// for a small screen to reduce the amount of scrolling needed.
 let pageLength = 10;
 // The definitive list of student <li> elements as supplied in index.html for the
 // Project 2 challenge. In practice, this data would be read in from a database.
 // But that's in a later unit of the course!
-// The alternative list is the result of a search.
 let htmlStudentList = document.querySelectorAll('.student-item');
+// The alternative list is the result of a search.
 let searchResultsList = document.querySelectorAll('.search-output');
 
 /***
@@ -55,7 +48,7 @@ const clearElement = (id) => {
 }
 
 /*** 
-  Need some appropriate comments here.
+  The main functions of the app: setUpPageData is a 
 ***/
 
 const setUpPageData = () => {
@@ -65,6 +58,8 @@ const setUpPageData = () => {
   showPage(htmlStudentList,1);
 }
 
+
+// Clears the current display; 
 const showPage = (list,pageNumber) => {
   firstHideAllTheLis();
   const numberOfStudents = list.length;
@@ -78,6 +73,9 @@ const showPage = (list,pageNumber) => {
     endLi = numberOfStudents;
   }
   nowDisplaySelectedLis(list,startLi,endLi);
+  // Arguably, the following line is test code. But it's useful to show at a glance
+  // how many students the html contains and, therefore, how many links should appear.
+  document.title = `Project 2 (${htmlStudentList.length} students)`;
 }
 
 const firstHideAllTheLis = () => {
@@ -110,7 +108,7 @@ const appendPageLinks = (activeList) => {
       links[i].className = '';
     }
   }
-  // The click-event handler:
+  // The click-event handler (also declared within the scope of appendPageLinks):
   const onClickingLink = (event) => {
     clearLinkClasses(); // Remove the 'active' class from all links
     const target = event.target; // The target is specifically an <a> element, not its parent <li>.
@@ -138,7 +136,9 @@ const appendPageLinks = (activeList) => {
   linksUL.addEventListener('click',onClickingLink,false);
 }
 
-// Add the search thingy. 
+/******************************************************************************************
+  appendSearchThingy() generates, appends, and adds the search functionality.
+******************************************************************************************/
 const appendSearchThingy = () => { 
   const pageHeaderDiv = document.querySelector('.page-header');
   clearElement('searchDiv');
@@ -154,7 +154,7 @@ const appendSearchThingy = () => {
   searchField.addEventListener('input',onEnteringSearchText,false);
 }     
 
-// Search event-handlers and utility functions
+// Search button event-handler
 const onClickingSearchButton = (event) => {
   clearElement('noSearchResults');
   if (event.target.textContent.search('search') >= 0) {
@@ -179,6 +179,7 @@ const onEnteringSearchText = (event) => {
     const li = htmlStudentList[i]
     const h3 = li.getElementsByTagName('h3')[0].textContent.toLowerCase();
     li.className = 'student-item cf';
+    // string.search() returns -1 if the search text is not found.
     if (h3.search(searchText) >= 0) {
       li.className = 'search-output student-item cf';
     }
@@ -194,6 +195,12 @@ const onEnteringSearchText = (event) => {
   }
 }
 
+// Although in principle searchResultsList is a live list, it proved necessary to 
+// clear it, and then re-assign the variable, explicitly. If you don't call this 
+// function, then when you display all the students the search list is retained
+// and re-displayed if you click the search button without entering any search
+// text. That might, potentially, be a desired behaviour depending on customer
+// requirements.
 const clearSearchResultsList = () => {
   for (let i=0; i<searchResultsList.length; i++) {
     searchResultsList[i].className = 'student-item cf';
@@ -217,10 +224,10 @@ const displayNoResults = () => {
   clearElement('linkDiv');
 }
 
-// Finally, run the code once the page has loaded.
-
+/*
+   Finally, run the code once the page has loaded. Adding in the 
+*/
 setUpPageData();
-
 
 
 
