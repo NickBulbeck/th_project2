@@ -15,10 +15,14 @@
    for any reason. I think there are browsers that don't work like this, however, in which case it
    would likely break.
 
+   ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
    When the button is double-clicked, the DOM is restored to its native state and the names
    and email addresses revert to normal.
+   ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-   Remember: none of this adds any business value whatsoever. It's all a bit of fun.
+   Remember: from a business requirements perspective, this adds value comparable to that of
+   a tokomak reactor made entirely of geese. From a learning perspective, however, it was
+   quite interesting.
 */
 let zaphod = 0;
 let freeStandingPrism = [];
